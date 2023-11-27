@@ -10,7 +10,7 @@ public class SQLMethods {
 
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
-            String url = "jdbc:mysql://localhost/twitter";
+            String url = "jdbc:mysql://localhost/twitter_public";
             String user = "root", passwd = "15371537";
 
             connection = DriverManager.getConnection(url, user, passwd);

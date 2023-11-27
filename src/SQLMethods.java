@@ -1,3 +1,5 @@
+import com.mysql.cj.protocol.Resultset;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,16 +31,16 @@ public class SQLMethods {
     }
 
     public static ResultSet ExecuteQuery (Connection con, String q1) {
-        ResultSet result = null;
+        ResultSet rs = null;
         try {
             Statement stmt = con.createStatement();
-            result = stmt.executeQuery(q1);
-            return result;
+            rs = stmt.executeQuery(q1);
+            return rs;
         } catch (SQLException e){
             e.printStackTrace();
         }
 
-        return result;
+        return rs;
     }
 
     public static int ExecuteUpdate (Connection con, String q1) {
@@ -255,6 +257,71 @@ public class SQLMethods {
             pstmt.setString(2, comment_id);
 
             int count = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void Show_User_Info (Connection con, String user_id) {
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            String q1 = "select name, profile_pic, introduction from user where user_id = ?";
+
+            pstmt = con.prepareStatement(q1);
+            rs = pstmt.executeQuery();
+
+            String user_name = rs.getString(1);
+            String profile_pic = rs.getString(2);
+            String introduction = rs.getString(3);
+
+            System.out.println("user_name = " + user_name);
+            System.out.println("user_id = " + user_id);
+            System.out.println("profile_pic = " + profile_pic);
+            System.out.println("introduction = " + introduction);
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void Get_PostID (Connection con) {
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            String q1 = "select post_id from post order by posted_at desc";
+
+            pstmt = con.prepareStatement(q1);
+            rs = pstmt.executeQuery();
+
+            String post_id = rs.getString(1);
+
+            System.out.println("post_id = " + post_id);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void Get_Content_Info (Connection con, String post_id) {
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            String q1 = "select content, location, posted_at from post where post_id = ?";
+
+            pstmt = con.prepareStatement(q1);
+            rs = pstmt.executeQuery();
+
+            String content = rs.getString(1);
+            String location = rs.getString(2);
+            String posted_at = rs.getString(3);
+
+            System.out.println("content = " + content);
+            System.out.println("location = " + location);
+            System.out.println("posted_at = " + posted_at);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

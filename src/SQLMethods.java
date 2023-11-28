@@ -1,5 +1,3 @@
-import com.mysql.cj.protocol.Resultset;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -128,6 +126,7 @@ public class SQLMethods {
         }
     }
 
+    //------------------------아직추가안함----------------------------
     public static void ListFollowings (Connection con, String following_id) {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -151,6 +150,7 @@ public class SQLMethods {
         }
     }
 
+    //-------------------아직추가안함
     public static void ListFollowers (Connection con, String follower_id) {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -192,6 +192,7 @@ public class SQLMethods {
         }
     }
 
+    //---------아직추가안함
     public static void Posts (Connection con, String user_id, String post_id) {
         PreparedStatement pstmt = null;
 
@@ -261,7 +262,7 @@ public class SQLMethods {
             e.printStackTrace();
         }
     }
-
+//----------아직
     public static void Show_User_Info (Connection con, String user_id) {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -285,7 +286,7 @@ public class SQLMethods {
             e.printStackTrace();
         }
     }
-
+    //----------아직
     public static void Get_PostID (Connection con) {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -303,7 +304,7 @@ public class SQLMethods {
             e.printStackTrace();
         }
     }
-
+    //----------아직
     public static void Get_Content_Info (Connection con, String post_id) {
         PreparedStatement pstmt = null;
         ResultSet rs = null;

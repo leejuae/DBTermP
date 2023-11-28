@@ -100,4 +100,27 @@ public class UserDao {
             e.printStackTrace();
         } return false; // 유저중복시 null
     }
+
+    // 비밀번호 변경
+    public boolean changePwUser(String newPassword, String user_id){
+        //1. JDBC Driver 로딩
+        try {
+            Class.forName(driver);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        String sql = "update user set pw = ? where user_id = ?";
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, newPassword);
+            pstmt.setString(2, user_id);
+
+            int rowsInserted = pstmt.executeUpdate();
+            return rowsInserted > 0;
+        } catch (SQLException e){
+            e.printStackTrace();
+        } return false;
+    }
 }

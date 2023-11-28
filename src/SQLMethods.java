@@ -1,3 +1,5 @@
+import Dto.user.UserDto;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -126,7 +128,6 @@ public class SQLMethods {
         }
     }
 
-    //------------------------아직추가안함----------------------------
     public static void ListFollowings (Connection con, String following_id) {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -150,7 +151,7 @@ public class SQLMethods {
         }
     }
 
-    //-------------------아직추가안함
+
     public static void ListFollowers (Connection con, String follower_id) {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -173,6 +174,8 @@ public class SQLMethods {
             e.printStackTrace();
         }
     }
+
+
     public static void Post (Connection con, String post_id, String content, Timestamp posted_at, String location) {
         PreparedStatement pstmt = null;
 
@@ -192,7 +195,7 @@ public class SQLMethods {
         }
     }
 
-    //---------아직추가안함
+    //---------아직추가안함 !! 이거 필요한건지 모르겠음!!! 왜 포스트에 유저 아이디가 없고 나눈건지
     public static void Posts (Connection con, String user_id, String post_id) {
         PreparedStatement pstmt = null;
 

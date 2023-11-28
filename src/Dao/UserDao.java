@@ -12,7 +12,7 @@ public class UserDao {
     private String password = "1234";
 
     //회원 전체 조회
-    public ArrayList<UserDto> selectList(){
+    public ArrayList<UserDto> selectUserList(){
         //1. JDBC Driver 로딩
         try {
             Class.forName(driver);
@@ -72,5 +72,32 @@ public class UserDao {
         } catch (SQLException e){
             e.printStackTrace();
         } return null; // 찾은 유저가 없는 경우 null 반환
+    }
+
+    // 회원가입
+    public boolean regUser(UserDto userDto){
+        //1. JDBC Driver 로딩
+        try {
+            Class.forName(driver);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        String sql = "INSERT INTO user (user_id, pw, name, profile_pic, introduction, created_at) VALUES (?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, userDto.getUser_id());
+            pstmt.setString(2, userDto.getPw());
+            pstmt.setString(3, userDto.getName());
+            pstmt.setString(4, userDto.getProfile_pic());
+            pstmt.setString(5, userDto.getIntroduction());
+            pstmt.setTimestamp(6, userDto.getCreated_at());
+
+            int rowsInserted = pstmt.executeUpdate();
+            return rowsInserted > 0;
+        } catch (SQLException e){
+            e.printStackTrace();
+        } return false; // 유저중복시 null
     }
 }

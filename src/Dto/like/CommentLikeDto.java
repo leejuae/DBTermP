@@ -17,6 +17,14 @@ public class CommentLikeDto {
         this.user_id = user_id;
     }
 
+    public String getComment_id() {
+        return comment_id;
+    }
+
+    public void setComment_id(String comment_id) {
+        this.comment_id = comment_id;
+    }
+
     @Override
     public String toString() {
         return "CommentLikeDto{" +

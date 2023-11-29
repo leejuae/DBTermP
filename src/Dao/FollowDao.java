@@ -12,7 +12,12 @@ public class FollowDao {
     private String user = "root";
     private String password = "1234";
 
-    // 팔로워 목록
+    /**
+     * Retrieves a list of followers based on the following_id.
+     *
+     * @param following_id The ID of the user being followed.
+     * @return ArrayList of follower IDs if found; otherwise, an empty list.
+     */
     public ArrayList<String> selectfollowerList(String following_id){
         //1. JDBC Driver 로딩
         try {
@@ -41,7 +46,12 @@ public class FollowDao {
         } return list;
     }
 
-    // 팔로잉 목록
+    /**
+     * Retrieves a list of users being followed based on the follower_id.
+     *
+     * @param follower_id The ID of the follower user.
+     * @return ArrayList of following user IDs if found; otherwise, an empty list.
+     */
     public ArrayList<String> selectfollowingList(String follower_id){
         //1. JDBC Driver 로딩
         try {
@@ -69,7 +79,11 @@ public class FollowDao {
         } return list;
     }
 
-    // follow table 전체출력
+    /**
+     * Retrieves the entire content of the follows table.
+     *
+     * @return ArrayList of FollowDto objects representing the follows table content.
+     */
     public ArrayList<FollowDto> selectfollowList(){
         //1. JDBC Driver 로딩
         try {

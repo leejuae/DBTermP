@@ -36,7 +36,12 @@ public class PostDao {
         } return false; // 유저중복시 null
     }
 
-    // 특정 유저의 포스트 목록
+    /**
+     * Retrieves a list of posts for a specific user.
+     *
+     * @param user_id The ID of the user.
+     * @return ArrayList of PostDto objects representing posts by the user.
+     */
     public ArrayList<PostDto> selectAllSpecificUserPost(String user_id){
         //1. JDBC Driver 로딩
         try {
@@ -67,7 +72,12 @@ public class PostDao {
         } return list; // 찾은 유저가 없는 경우 null 반환
     }
 
-    // 특정 포스트
+    /**
+     * Retrieves details of a specific post by its ID.
+     *
+     * @param post_id The ID of the post.
+     * @return PostDto representing the specific post.
+     */
     public PostDto selectOnePost(String post_id){
         //1. JDBC Driver 로딩
         try {
@@ -95,7 +105,11 @@ public class PostDao {
         } return null; // 찾은 유저가 없는 경우 null 반환
     }
 
-    // 전체 포스트 목록
+    /**
+     * Retrieves details of all posts.
+     *
+     * @return ArrayList of PostDto representing all posts.
+     */
     public ArrayList<PostDto> selectAllPost(){
         //1. JDBC Driver 로딩
         try {

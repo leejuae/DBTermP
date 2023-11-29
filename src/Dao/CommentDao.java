@@ -15,7 +15,12 @@ public class CommentDao {
     private String user = "root";
     private String password = "1234";
 
-    // 댓글달기
+    /**
+     * Adds a comment to the post
+     *
+     * @param commentDto The CommentDto object containing comment details.
+     * @return true if the comment is successfully added; false if the user is a duplicate or an error occurs.
+     */
     public boolean addCommment(CommentDto commentDto){
         //1. JDBC Driver 로딩
         try {
@@ -41,8 +46,13 @@ public class CommentDao {
     }
 
 
-    // 답댓글 달기
-    public boolean commentsOn(String post_id, String comment_id, String user_id){
+    /**
+     * Adds a comment on a post.
+     *
+     * @param commentOnDto The DTO containing post, comment, and user details.
+     * @return true if the comment is successfully added; false if it's a duplicate or an error occurs.
+     */
+    public boolean commentsOn(CommentOnDto commentOnDto){
         //1. JDBC Driver 로딩
         try {
             Class.forName(driver);
@@ -54,9 +64,9 @@ public class CommentDao {
         try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, post_id);
-            pstmt.setString(2, comment_id);
-            pstmt.setString(3, user_id);
+            pstmt.setString(1, commentOnDto.getPost_id());
+            pstmt.setString(2, commentOnDto.getComment_id());
+            pstmt.setString(3, commentOnDto.getUser_id());
 
             int rowsInserted = pstmt.executeUpdate();
             return rowsInserted > 0;
@@ -65,7 +75,12 @@ public class CommentDao {
         } return false; // 유저중복시 null
     }
 
-    // comment에 따른 답댓글 보기
+    /**
+     * Retrieves CommentOnDto based on the comment_id.
+     *
+     * @param comment_id The ID of the comment.
+     * @return CommentOnDto object if found; otherwise, null.
+     */
     public CommentOnDto selectAllcommentOn(String comment_id){
         //1. JDBC Driver 로딩
         try {
@@ -92,7 +107,12 @@ public class CommentDao {
         } return null;
     }
 
-    // 댓글 보기(코멘트 아이디 입력)
+    /**
+     * Retrieves a list of comments based on the comment_id.
+     *
+     * @param comment_id The ID of the comment.
+     * @return ArrayList of CommentDto objects if found; otherwise, an empty list.
+     */
     public ArrayList<CommentDto> getComment(String comment_id){
         //1. JDBC Driver 로딩
         try {

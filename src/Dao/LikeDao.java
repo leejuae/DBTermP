@@ -13,7 +13,12 @@ public class LikeDao {
     private String user = "root";
     private String password = "1234";
 
-    //글 좋아요 추가
+    /**
+     * Adds a post like to the database.
+     *
+     * @param postLikeDto The PostLikeDto object containing user and post details.
+     * @return true if the like is successfully added; false if it's a duplicate or an error occurs.
+     */
     public boolean addPostLike(PostLikeDto postLikeDto){
         //1. JDBC Driver 로딩
         try {
@@ -36,7 +41,12 @@ public class LikeDao {
         } return false; // 중복시 null
     }
 
-    //댓글 좋아요 추가
+    /**
+     * Adds a comment like to the database.
+     *
+     * @param commentLikeDto The CommentLikeDto object containing user and comment details.
+     * @return true if the like is successfully added; false if it's a duplicate or an error occurs.
+     */
     public boolean addCommentLike(CommentLikeDto commentLikeDto){
         //1. JDBC Driver 로딩
         try {
@@ -59,7 +69,12 @@ public class LikeDao {
         } return false; // 중복시 null
     }
 
-    //글 좋아요 리스트 불러오기
+    /**
+     * Retrieves the list of users who liked a particular post.
+     *
+     * @param post_id The ID of the post.
+     * @return ArrayList of PostLikeDto objects representing users who liked the post.
+     */
     public ArrayList<PostLikeDto> selectPostLike(String post_id){
         //1. JDBC Driver 로딩
         try {
@@ -80,6 +95,40 @@ public class LikeDao {
                 String user_id = rs.getString("user_id");
                 String post_Id = rs.getString("post_id");
                 PostLikeDto dto = new PostLikeDto(user_id, post_Id);
+
+                list.add(dto);
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        } return list;
+    }
+
+    /**
+     * Retrieves the list of users who liked a particular comment.
+     *
+     * @param comment_id The ID of the comment.
+     * @return ArrayList of CommentLikeDto objects representing users who liked the comment.
+     */
+    public ArrayList<CommentLikeDto> selectCommentLike(String comment_id){
+        //1. JDBC Driver 로딩
+        try {
+            Class.forName(driver);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList<CommentLikeDto> list = null; // 결과데이터를 담을 배열
+        String sql = "select * from likes_comment where='"+comment_id+"'"; // sql문
+        try(Connection conn = DriverManager.getConnection(url, user, password); // 2. DB서버 연결
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);)
+        {
+            // 5. SQL 결과 처리
+            list = new ArrayList<>();
+            while (rs.next()){
+                String user_id = rs.getString("user_id");
+                String post_Id = rs.getString("comment_id");
+                CommentLikeDto dto = new CommentLikeDto(user_id, post_Id);
 
                 list.add(dto);
             }

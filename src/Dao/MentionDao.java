@@ -11,8 +11,13 @@ public class MentionDao {
     private String user = "root";
     private String password = "1234";
 
-    // 언급 작성
-    public boolean mentionOn(String mentioned_user_id, String comment_id){
+    /**
+     * Adds a mention to the mentioned_on table.
+     *
+     * @param mentionOnDto The MentionOnDto object containing mentioned user and comment details.
+     * @return true if the mention is successfully added; false if it's a duplicate or an error occurs.
+     */
+    public boolean mentionOn(MentionOnDto mentionOnDto){
         //1. JDBC Driver 로딩
         try {
             Class.forName(driver);
@@ -24,8 +29,8 @@ public class MentionDao {
         try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, mentioned_user_id);
-            pstmt.setString(2, comment_id);
+            pstmt.setString(1, mentionOnDto.getMentioned_user_id());
+            pstmt.setString(2, mentionOnDto.getComment_id());
 
             int rowsInserted = pstmt.executeUpdate();
             return rowsInserted > 0;
@@ -34,7 +39,12 @@ public class MentionDao {
         } return false; // 유저중복시 null
     }
 
-    //언급 보기(사용자 아이디 입력시)
+    /**
+     * Retrieves a list of mentions for a specified user ID.
+     *
+     * @param mentioned_user_id The ID of the mentioned user.
+     * @return ArrayList of MentionOnDto objects representing mentions for the user.
+     */
     public ArrayList<MentionOnDto> selectMentionList(String mentioned_user_id){
         //1. JDBC Driver 로딩
         try {

@@ -11,6 +11,9 @@ public class UserDto {
     private String introduction;
     private Timestamp created_at;
 
+    public UserDto () {
+    };
+
     public UserDto(String user_id, String pw, String name, String profile_pic, String introduction, Timestamp created_at) {
         this.user_id = user_id;
         this.pw = pw;

@@ -9,7 +9,7 @@ public class UserDao {
     private String driver = "com.mysql.cj.jdbc.Driver";
     private String url = "jdbc:mysql://localhost:3306/twitter_public";
     private String user = "root";
-    private String password = "1234";
+    private String password = "15371537";
 
     /**
      * Retrieves details of all users.

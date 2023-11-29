@@ -76,7 +76,7 @@ public class PostDao {
             e.printStackTrace();
         }
 
-        String sql = "select * from user where user_id ='"+post_id+"'"; // sql문
+        String sql = "select * from post where user_id ='"+post_id+"'"; // sql문
         try(Connection conn = DriverManager.getConnection(url, user, password); // 2. DB서버 연결
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);)
@@ -105,7 +105,7 @@ public class PostDao {
         }
 
         ArrayList<PostDto> list = null; // 결과데이터를 담을 배열
-        String sql = "select * from user"; // sql문
+        String sql = "select * from post order by posted_at desc"; // sql문
         try(Connection conn = DriverManager.getConnection(url, user, password); // 2. DB서버 연결
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);)

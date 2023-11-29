@@ -196,6 +196,7 @@ public class SQLMethods {
     }
 
     //---------아직추가안함 !! 이거 필요한건지 모르겠음!!! 왜 포스트에 유저 아이디가 없고 나눈건지
+    // post와 합쳐도 될 것 같아 합침 일단
     public static void Posts (Connection con, String user_id, String post_id) {
         PreparedStatement pstmt = null;
 
@@ -265,7 +266,7 @@ public class SQLMethods {
             e.printStackTrace();
         }
     }
-//----------아직
+
     public static void Show_User_Info (Connection con, String user_id) {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -289,7 +290,7 @@ public class SQLMethods {
             e.printStackTrace();
         }
     }
-    //----------아직
+
     public static void Get_PostID (Connection con) {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -307,7 +308,7 @@ public class SQLMethods {
             e.printStackTrace();
         }
     }
-    //----------아직
+
     public static void Get_Content_Info (Connection con, String post_id) {
         PreparedStatement pstmt = null;
         ResultSet rs = null;

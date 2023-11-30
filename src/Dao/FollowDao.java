@@ -123,13 +123,13 @@ public class FollowDao {
         }
 
         ArrayList<FollowDto> list = null; // 결과데이터를 담을 배열
-        String sql = "select follower_id from follow where following_id = \"" + following_id+ "\" and follower_id = \"" + follower_id + "\""; // sql문
+        String sql = "select follower_id from follows where following_id = \"" + following_id+ "\" and follower_id = \"" + follower_id + "\""; // sql문
         try(Connection conn = DriverManager.getConnection(url, user, password); // 2. DB서버 연결
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);)
         {
             // 5. SQL 결과 처리
-            String following_Id = rs.getString("following_id");
+            String following_Id = rs.getString("follower_id");
             String result = new String(following_id);
 
             return following_id;
@@ -157,7 +157,7 @@ public class FollowDao {
     // 언팔하기
     public boolean unFollow(String follower_id, String following_id){
 
-        String sql = "delete from follow where following_id = \"" + following_id + "\" and follower_id = \""+follower_id+"\";";
+        String sql = "delete from follows where following_id = \"" + following_id + "\" and follower_id = \""+follower_id+"\";";
         try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 

@@ -4,6 +4,10 @@ public class FollowDto {
     private String following_id;
     private String follower_id;
 
+    public FollowDto() {
+        this.following_id = "0000";
+        this.follower_id = "0000";
+    }
     public FollowDto(String following_id, String follower_id) {
         this.following_id = following_id;
         this.follower_id = follower_id;

@@ -10,17 +10,27 @@ public class UserDto {
     private String profile_pic;
     private String introduction;
     private Timestamp created_at;
+    private String background_pic;
 
-    public UserDto () {
-    };
+    public UserDto() {
+        this.user_id = "0000";
+        this.pw = "0000";
+        this.name = "0000";
+        this.profile_pic = "src/assets/profile_image.png";
+        this.introduction = "0000";
+        this.created_at = new Timestamp(System.currentTimeMillis());
+        this.background_pic = "src/assets/cloud.png";
+    }
 
-    public UserDto(String user_id, String pw, String name, String profile_pic, String introduction, Timestamp created_at) {
+
+    public UserDto(String user_id, String pw, String name, String profile_pic, String introduction, Timestamp created_at, String background_pic) {
         this.user_id = user_id;
         this.pw = pw;
         this.name = name;
         this.profile_pic = profile_pic;
         this.introduction = introduction;
         this.created_at = created_at;
+        this.background_pic = background_pic;
     }
 
     public String getUser_id() {
@@ -71,6 +81,14 @@ public class UserDto {
         this.created_at = created_at;
     }
 
+    public String getBackground_pic() {
+        return background_pic;
+    }
+
+    public void setBackground_pic(String background_pic) {
+        this.background_pic = background_pic;
+    }
+
     @Override
     public String toString() {
         return "UserDto{" +
@@ -80,6 +98,7 @@ public class UserDto {
                 ", profile_pic='" + profile_pic + '\'' +
                 ", introduction='" + introduction + '\'' +
                 ", created_at=" + created_at +
+                ", background_pic='" + background_pic + '\'' +
                 '}';
     }
 }

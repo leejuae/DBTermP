@@ -4,6 +4,11 @@ public class MentionOnDto {
     private String mentioned_user_id;
     private String comment_id;
 
+    public MentionOnDto() {
+        this.mentioned_user_id = "0000";
+        this.comment_id = "0000";
+    }
+
     public MentionOnDto(String mentioned_user_id, String comment_id) {
         this.mentioned_user_id = mentioned_user_id;
         this.comment_id = comment_id;

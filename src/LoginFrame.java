@@ -63,7 +63,7 @@ public class LoginFrame extends JFrame {
 
 //					new MainFeed();
 //                    dispose();
-                } else if (userDto == null) {
+                } else if (userDto.getPw().equals(pw)) {
                     System.out.println("no - existing pw");
                     return;
                 } else {

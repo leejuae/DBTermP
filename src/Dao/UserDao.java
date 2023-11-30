@@ -9,7 +9,7 @@ public class UserDao {
     private String driver = "com.mysql.cj.jdbc.Driver";
     private String url = "jdbc:mysql://localhost:3306/twitter_public";
     private String user = "root";
-    private String password = "15371537";
+    private String password = "1234";
 
     /**
      * Retrieves details of all users.
@@ -39,7 +39,8 @@ public class UserDao {
                 String profile_pic = rs.getString("profile_pic");
                 String introduction = rs.getString("introduction");
                 Timestamp created_at = rs.getTimestamp("created_at");
-                UserDto dto = new UserDto(user_id, pw, name, profile_pic, introduction, created_at);
+                String background_pic = rs.getString("background_pic");
+                UserDto dto = new UserDto(user_id, pw, name, profile_pic, introduction, created_at, background_pic);
 
                 list.add(dto);
             }
@@ -75,7 +76,8 @@ public class UserDao {
                 String profile_pic = rs.getString("profile_pic");
                 String introduction = rs.getString("introduction");
                 Timestamp created_at = rs.getTimestamp("created_at");
-                return new UserDto(userId, pw, name, profile_pic, introduction, created_at);
+                String background_pic = rs.getString("background_pic");
+                return new UserDto(userId, pw, name, profile_pic, introduction, created_at, background_pic);
 
             }
         } catch (SQLException e){
@@ -103,7 +105,7 @@ public class UserDao {
             e.printStackTrace();
         }
 
-        String sql = "INSERT INTO user (user_id, pw, name, profile_pic, introduction, created_at) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO user (user_id, pw, name, profile_pic, introduction, created_at, background_pic) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -113,6 +115,7 @@ public class UserDao {
             pstmt.setString(4, userDto.getProfile_pic());
             pstmt.setString(5, userDto.getIntroduction());
             pstmt.setTimestamp(6, userDto.getCreated_at());
+            pstmt.setString(7, userDto.getBackground_pic());
 
             int rowsInserted = pstmt.executeUpdate();
             return rowsInserted > 0;
@@ -177,6 +180,7 @@ public class UserDao {
                 String profile_pic = rs.getString("profile_pic");
                 String introduction = rs.getString("introduction");
                 Timestamp created_at = rs.getTimestamp("created_at");
+                String background_pic = rs.getString("background_pic");
                 return true;
 
             }

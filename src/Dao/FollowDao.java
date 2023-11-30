@@ -2,6 +2,7 @@ package Dao;
 
 import Dto.follow.FollowDto;
 import Dto.user.UserDto;
+import GUI.ClientInformation;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -112,5 +113,58 @@ public class FollowDao {
         } return list;
     }
 
-    // 팔로잉 추가
+    // 나를 팔로우하는 사람 불러오기
+    public String checkIfFollowing(String following_id, String follower_id){
+        //1. JDBC Driver 로딩
+        try {
+            Class.forName(driver);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList<FollowDto> list = null; // 결과데이터를 담을 배열
+        String sql = "select follower_id from follow where following_id = \"" + following_id+ "\" and follower_id = \"" + follower_id + "\""; // sql문
+        try(Connection conn = DriverManager.getConnection(url, user, password); // 2. DB서버 연결
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);)
+        {
+            // 5. SQL 결과 처리
+            String following_Id = rs.getString("following_id");
+            String result = new String(following_id);
+
+            return following_id;
+        } catch (SQLException e){
+            e.printStackTrace();
+        } return null;
+    }
+
+    // 팔로우하기
+    public String follow(String follower_id, String following_id){
+
+        String sql = "INSERT INTO follow (following_id, follower_id) VALUES (?, ?)";
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, following_id);
+            pstmt.setString(2, follower_id);
+
+            return following_id;
+        } catch (SQLException e){
+            e.printStackTrace();
+        } return null;
+    }
+
+    // 언팔하기
+    public boolean unFollow(String follower_id, String following_id){
+
+        String sql = "delete from follow where following_id = \"" + following_id + "\" and follower_id = \""+follower_id+"\";";
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.executeUpdate();
+            return true;
+        } catch (SQLException e){
+            e.printStackTrace();
+        } return false;
+    }
 }

@@ -4,6 +4,10 @@ public class PostLikeDto {
     private String user_id;
     private String post_id;
 
+    public PostLikeDto() {
+        this.user_id = "0000";
+        this.post_id = "0000";
+    }
     public PostLikeDto(String user_id, String post_id) {
         this.user_id = user_id;
         this.post_id = post_id;

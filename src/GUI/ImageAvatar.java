@@ -1,47 +1,63 @@
 package GUI;
 
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 
-public class ImageAvatar extends JComponent{
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+
+// 이미지를 타원 모양으로 자르고 테두리를 덧입히는 JComponent를 구현한 클래스
+public class ImageAvatar extends JComponent {
+	private Icon image; // 이미지 아이콘
+	private int borderSize = 4; // 테두리 크기
+	private Color borderColor = new Color(255, 255, 255); // 테두리 색상
+
 	public ImageAvatar() {
 	}
 
-	
+	// 이미지 아이콘을 반환하는 메서드
 	public Icon getImage() {
 		return image;
 	}
-	
+
+	// 이미지 아이콘을 설정하는 메서드
 	public void setImage(Icon image) {
 		this.image = image;
 	}
-	
+
+	// 테두리 크기를 반환하는 메서드
 	public int getBorderSize() {
 		return borderSize;
 	}
-	
+
+	// 테두리 크기를 설정하는 메서드
 	public void setBorderSize(int borderSize) {
 		this.borderSize = borderSize;
 	}
-	
+
+	// 테두리 색상을 반환하는 메서드
 	public Color getBorderColor() {
 		return borderColor;
 	}
-	
+
+	// 테두리 색상을 설정하는 메서드
 	public void setBorderColor(Color borderColor) {
 		this.borderColor = borderColor;
 	}
 	
-	private Icon image;
-	private int borderSize = 4;
-	private Color borderColor = new Color(255,255,255);
-	
 	@Override
 	public void paint(Graphics g) {
 		if(image!= null) {
+			// 이미지 처리 로직이 들어가는 부분입니다.
 			int width = image.getIconWidth();
 			int height= image.getIconHeight();
+			// 이미지를 타원 모양으로 자르고 테두리를 씌우는 코드입니다.
 			int diameter=Math.min(width, height);
 			BufferedImage mask=new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2d=mask.createGraphics();
@@ -79,9 +95,10 @@ public class ImageAvatar extends JComponent{
 	            
 		}
 		
-		super.paint(g);
+		super.paint(g); // 기본 컴포넌트의 paint 메서드 호출
 	}
-	
+
+	// 이미지를 화면에 맞게 조정하는 메서드
 	private Rectangle getAutoSize(Icon image) {
         int w = getWidth();
         int h = getHeight();
@@ -96,7 +113,8 @@ public class ImageAvatar extends JComponent{
         int y = (h - height) / 2;
         return new Rectangle(new Point(x, y), new Dimension(width, height));
     }
-	
+
+	// Icon을 Image로 변환하는 메서드
 	private Image toImage(Icon icon) {
 		return ((ImageIcon)icon).getImage();
 	}

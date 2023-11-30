@@ -3,6 +3,8 @@ package Dao;
 import Dto.like.CommentLikeDto;
 import Dto.like.PostLikeDto;
 import Dto.user.UserDto;
+import GUI.ClientInformation;
+import GUI.SQLMethods;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -103,6 +105,57 @@ public class LikeDao {
         } return list;
     }
 
+    public String selectOnePostLike(String post_id, String user_id){
+        //1. JDBC Driver 로딩
+        try {
+            Class.forName(driver);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList<PostLikeDto> list = null; // 결과데이터를 담을 배열
+        String sql = "select post_id from post_like where post_id = \"" + post_id + "\" and  user_id = \"" + user_id + "\";"; // sql문
+        try(Connection conn = DriverManager.getConnection(url, user, password); // 2. DB서버 연결
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);)
+        {
+            // 5. SQL 결과 처리
+            list = new ArrayList<>();
+            while (rs.next()){
+                String post_Id = rs.getString("post_id");
+
+                return post_Id;
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        } return null;
+    }
+
+    public int selectNumPostLike(String post_id){
+        //1. JDBC Driver 로딩
+        try {
+            Class.forName(driver);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList<PostLikeDto> list = null; // 결과데이터를 담을 배열
+        String sql = "select count(user_id) from likes_post where post_id = \"" + post_id + "\";"; // sql문
+        try(Connection conn = DriverManager.getConnection(url, user, password); // 2. DB서버 연결
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);)
+        {
+            // 5. SQL 결과 처리
+            list = new ArrayList<>();
+            while (rs.next()){
+                int cnt = rs.getInt(1);
+                return cnt;
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        } return 0;
+    }
+
     /**
      * Retrieves the list of users who liked a particular comment.
      *
@@ -136,4 +189,169 @@ public class LikeDao {
             e.printStackTrace();
         } return list;
     }
+
+    public String selectOneCommentLike(String comment_id, String user_id){
+        //1. JDBC Driver 로딩
+        try {
+            Class.forName(driver);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        String sql = "select comment_id from comment_like where comment_id = \"" + comment_id + "\" and  user_id = \"" + user_id + "\";"; // sql문
+        try(Connection conn = DriverManager.getConnection(url, user, password); // 2. DB서버 연결
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);)
+        {
+            // 5. SQL 결과 처리
+            while (rs.next()){
+                String comment_Id = rs.getString("comment_id");
+
+                return comment_Id;
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        } return null;
+    }
+
+    public int selectNumCommentkLike(String comment_id){
+        //1. JDBC Driver 로딩
+        try {
+            Class.forName(driver);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList<PostLikeDto> list = null; // 결과데이터를 담을 배열
+        String sql = "select count(user_id) from likes_comment where comment_id = \"" + comment_id + "\";"; // sql문
+        try(Connection conn = DriverManager.getConnection(url, user, password); // 2. DB서버 연결
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);)
+        {
+            // 5. SQL 결과 처리
+            list = new ArrayList<>();
+            while (rs.next()){
+                int cnt = rs.getInt(1);
+                return cnt;
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        } return 0;
+    }
+
+    public int postLike(String user_id, String post_id)
+    {
+        try(Connection conn = DriverManager.getConnection(url, user, password);){ // 2. DB서버 연결 {
+            String q1 = "select * from posts where post_id = \"" + post_id + "\";";
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(q1);
+
+            if(!rs.next())
+            {
+                System.out.println("Enter a wrong post id!");
+                return -1;
+            }
+
+            q1 = "select * from post_like where liker_id = \"" + user_id + "\" and post_id = \""  + post_id + "\";";
+            rs = stmt.executeQuery(q1);
+            if(rs.next())
+            {
+                if(rs.getString(1).compareTo("") == 0)
+                {
+                    String q2 = "insert into post_like values(\""+post_id + "\", \"" + user_id + "\");";
+                    stmt.executeUpdate(q2);
+                    return 1;
+                }
+                else {
+                    System.out.println("Already liked. Unlike.");
+                    String q2 = "delete from post_like where liker_id = \"" + user_id +"\" and post_id = \"" + post_id + "\";";
+                    stmt.executeUpdate(q2);
+                    return 0;
+                }
+            }
+            else{
+                String q2 = "insert into post_like values(\""+post_id + "\", \"" + user_id + "\");";
+                stmt.executeUpdate(q2);
+                return 1;
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    //return 0 unlike
+    //return 1 like
+    //return -1 error
+    // 댓글 좋아요/좋아요 취소 메서드
+    public static int CommentLike(Connection connection, String user_id, String comment_id){
+        Statement stmt =null;
+        ResultSet rs = null;
+
+        try {
+            String q1 = "select * from comment where comment_id = \"" + comment_id + "\";";
+            stmt = connection.createStatement();
+            rs = stmt.executeQuery(q1);
+
+            if(!rs.next())
+                return -1;
+
+
+
+            String q2 = "select * from comment_like where comment_id = \"" + comment_id + "\" and user_id = \"" + user_id + "\";";
+            ResultSet tRs = SQLMethods.ExecuteQuery(SQLMethods.GetCon(), q2);
+            if(tRs.next()) {
+                if(tRs.getString(1).compareTo("") != 0)
+                {
+                    q2 = "delete from comment_like where user_id = \"" + user_id +"\" and comment_id = \"" + comment_id + "\";";
+                    stmt.executeUpdate(q2);
+                }
+                else {
+                    q2 = "insert into comment_like values(\"" +comment_id + "\", \"" + user_id + "\");";
+                    stmt.executeUpdate(q2);
+                    return 1;
+                }
+
+
+                return 0;
+            }
+
+            else{
+
+                q2 = "insert into comment_like values(\"" +comment_id + "\", \"" + user_id + "\");";
+                stmt.executeUpdate(q2);
+                return 1;
+            }
+
+        }catch (SQLException e){
+            e.printStackTrace();
+            return -1;
+        }
+
+    }
+
+//    public int selectNumCommentOnLike(String comment_id){
+//        //1. JDBC Driver 로딩
+//        try {
+//            Class.forName(driver);
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//
+//        ArrayList<PostLikeDto> list = null; // 결과데이터를 담을 배열
+//        String sql = "select count(user_id) from likes_post where post_id = \"" + post_id + "\";"; // sql문
+//        try(Connection conn = DriverManager.getConnection(url, user, password); // 2. DB서버 연결
+//            Statement stmt = conn.createStatement();
+//            ResultSet rs = stmt.executeQuery(sql);)
+//        {
+//            // 5. SQL 결과 처리
+//            list = new ArrayList<>();
+//            while (rs.next()){
+//                int cnt = rs.getInt(1);
+//                return cnt;
+//            }
+//        } catch (SQLException e){
+//            e.printStackTrace();
+//        } return 0;
+//    }
 }

@@ -20,7 +20,7 @@ public class PostDao {
             e.printStackTrace();
         }
 
-        String sql = "insert into post(post_id, content, posted_at, location) values (?, ?, ?, ?)";
+        String sql = "insert into post(post_id, content, posted_at, location, user_id) values (?, ?, ?, ?, ?)";
         try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -28,6 +28,7 @@ public class PostDao {
             pstmt.setString(2, postDto.getContent());
             pstmt.setTimestamp(3, postDto.getTimeStamp());
             pstmt.setString(4, postDto.getLocation());
+            pstmt.setString(5, postDto.getUser_id());
 
             int rowsInserted = pstmt.executeUpdate();
             return rowsInserted > 0;
@@ -63,7 +64,8 @@ public class PostDao {
                 Timestamp posted_at = rs.getTimestamp("posted_at");
                 String content = rs.getString("content");
                 String location = rs.getString("location");
-                PostDto dto = new PostDto(post_id, posted_at, content, location);
+                String user_Id = rs.getString("user_id");
+                PostDto dto = new PostDto(post_id, posted_at, content, location, user_id);
 
                 list.add(dto);
             }
@@ -97,7 +99,8 @@ public class PostDao {
                 Timestamp posted_at = rs.getTimestamp("posted_at");
                 String content = rs.getString("content");
                 String location = rs.getString("location");
-                return new PostDto(post_Id, posted_at, content, location);
+                String user_id = rs.getString("user_id");
+                return new PostDto(post_Id, posted_at, content, location, user_id);
 
             }
         } catch (SQLException e){
@@ -131,7 +134,8 @@ public class PostDao {
                 Timestamp posted_at = rs.getTimestamp("posted_at");
                 String content = rs.getString("content");
                 String location = rs.getString("location");
-                PostDto dto = new PostDto(post_id, posted_at, content, location);
+                String user_id = rs.getString("user_id");
+                PostDto dto = new PostDto(post_id, posted_at, content, location, user_id);
 
                 list.add(dto);
             }
